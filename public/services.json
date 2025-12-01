@@ -1,0 +1,74 @@
+[
+  {
+    "serviceId": 1,
+    "serviceName": "Winter Coat Fitting for Dogs",
+    "providerName": "PawCare Studio",
+    "providerEmail": "info@pawcare.com",
+    "price": 25,
+    "rating": 4.9,
+    "slotsAvailable": 4,
+    "description": "Custom coat fitting and warm outfit options to keep your dog comfortable in the cold.",
+    "image": "https://i.postimg.cc/xyz1/winter-coat-dog.jpg",
+    "category": "Clothing"
+  },
+  {
+    "serviceId": 2,
+    "serviceName": "Winter Grooming & Paw Treatment",
+    "providerName": "CozyPets Grooming",
+    "providerEmail": "hello@cozypets.com",
+    "price": 30,
+    "rating": 4.8,
+    "slotsAvailable": 3,
+    "description": "Professional grooming with moisturizing paw balm and winter-safe shampoo.",
+    "image": "https://i.postimg.cc/xyz2/winter-grooming.jpg",
+    "category": "Grooming"
+  },
+  {
+    "serviceId": 3,
+    "serviceName": "Heated Bed Rental Consultation",
+    "providerName": "WarmWhiskers Supplies",
+    "providerEmail": "support@warmwhiskers.com",
+    "price": 15,
+    "rating": 4.7,
+    "slotsAvailable": 6,
+    "description": "Advice and short-term rental of heated pet beds suitable for small to medium pets.",
+    "image": "https://i.postimg.cc/xyz3/heated-bed.jpg",
+    "category": "Equipment"
+  },
+  {
+    "serviceId": 4,
+    "serviceName": "Anti-Ice Paw Wax Application",
+    "providerName": "SnowPaws Clinic",
+    "providerEmail": "contact@snowpaws.com",
+    "price": 12,
+    "rating": 4.6,
+    "slotsAvailable": 5,
+    "description": "Protective paw wax application to prevent salt and ice damage during walks.",
+    "image": "https://i.postimg.cc/xyz4/paw-wax.jpg",
+    "category": "Grooming"
+  },
+  {
+    "serviceId": 5,
+    "serviceName": "Cold-Weather Nutrition Consult",
+    "providerName": "FurryFuel Nutrition",
+    "providerEmail": "diet@furryfuel.com",
+    "price": 40,
+    "rating": 4.95,
+    "slotsAvailable": 2,
+    "description": "Nutrition planning to ensure optimal calories and supplements for colder months.",
+    "image": "https://i.postimg.cc/xyz5/nutrition-consult.jpg",
+    "category": "Health"
+  },
+  {
+    "serviceId": 6,
+    "serviceName": "Indoor Exercise & Play Session",
+    "providerName": "CozyWalks",
+    "providerEmail": "bookings@cozywalks.com",
+    "price": 18,
+    "rating": 4.5,
+    "slotsAvailable": 8,
+    "description": "Supervised indoor play sessions to keep pets active when outdoor time is limited.",
+    "image": "https://i.postimg.cc/xyz6/indoor-play.jpg",
+    "category": "Activity"
+  }
+]
