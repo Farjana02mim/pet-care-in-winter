@@ -1,32 +1,43 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { updateProfile } from "firebase/auth";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Profile = () => {
   const { user } = useContext(AuthContext);
 
-  const handleUpdate = () => {
-    toast.info("❄️ Update Profile feature coming soon!", {
-      position: "top-center",
-      autoClose: 2500,
-      theme: "colored",
-    });
+  // Toggle form
+  const [showForm, setShowForm] = useState(false);
+
+  // Form states
+  const [name, setName] = useState(user?.displayName || "");
+  const [photo, setPhoto] = useState(user?.photoURL || "");
+
+  const handleUpdateProfile = async (e) => {
+    e.preventDefault();
+
+    try {
+      await updateProfile(user, {
+        displayName: name,
+        photoURL: photo,
+      });
+
+      toast.success("🎉 Profile Updated Successfully!", {
+        position: "top-center",
+      });
+
+      setShowForm(false); // hide form
+    } catch (error) {
+      console.error(error);
+      toast.error("❌ Failed to update profile");
+    }
   };
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-pink-100 via-orange-100 to-gray-200 text-center relative overflow-hidden">
 
-      {/* Toasts */}
       <ToastContainer />
-
-      {/* Floating Winter Icons */}
-      <div className="absolute top-10 left-10 text-white text-4xl animate-spin-slow">
-        🐾
-      </div>
-      <div className="absolute bottom-16 right-12 text-white text-4xl animate-bounce">
-        ❄️
-      </div>
 
       <h1 className="text-4xl md:text-6xl font-extrabold text-gray-800 drop-shadow-lg">
         🐶 Pet Winter Profile
@@ -34,6 +45,7 @@ const Profile = () => {
 
       {user ? (
         <div className="mt-10 flex flex-col items-center gap-5 bg-white/30 backdrop-blur-md p-8 rounded-2xl shadow-xl">
+          
           {/* User Image */}
           <img
             src={user.photoURL || "https://via.placeholder.com/150"}
@@ -47,13 +59,45 @@ const Profile = () => {
           </h2>
           <p className="text-gray-700">{user.email || "No Email"}</p>
 
-          {/* Update Profile Button */}
+          {/* Update Button */}
           <button
-            onClick={handleUpdate}
+            onClick={() => setShowForm(!showForm)}
             className="mt-4 px-6 py-2 bg-gradient-to-r from-pink-400 to-orange-300 text-white font-semibold rounded-lg shadow hover:opacity-90 transition"
           >
-            Update Profile
+            {showForm ? "Close" : "Update Profile"}
           </button>
+
+          {/* Update Form */}
+          {showForm && (
+            <form
+              onSubmit={handleUpdateProfile}
+              className="mt-6 w-full flex flex-col gap-4 bg-white/70 p-5 rounded-xl shadow-md"
+            >
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Enter name"
+                className="w-full px-4 py-2 border rounded-lg"
+                required
+              />
+
+              <input
+                type="text"
+                value={photo}
+                onChange={(e) => setPhoto(e.target.value)}
+                placeholder="Photo URL"
+                className="w-full px-4 py-2 border rounded-lg"
+              />
+
+              <button
+                type="submit"
+                className="px-6 py-2 bg-orange-400 text-white rounded-lg shadow hover:bg-orange-500 transition"
+              >
+                Save Changes
+              </button>
+            </form>
+          )}
         </div>
       ) : (
         <p className="mt-10 text-gray-700">

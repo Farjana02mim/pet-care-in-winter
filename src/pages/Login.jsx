@@ -8,10 +8,10 @@ import { AuthContext } from "../context/AuthContext";
 
 const Login = () => {
   const [show, setShow] = useState(false);
+
   const {
     signInWithEmailAndPasswordFunc,
     signInWithEmailFunc,
-    sendPassResetEmailFunc,
     setLoading,
     setUser,
     user,
@@ -23,7 +23,7 @@ const Login = () => {
 
   const emailRef = useRef(null);
 
-  // ✅ Navigate if user is already logged in
+  // Redirect if logged in
   useEffect(() => {
     if (user) {
       navigate(from, { replace: true });
@@ -39,10 +39,12 @@ const Login = () => {
     signInWithEmailAndPasswordFunc(email, password)
       .then((res) => {
         setLoading(false);
+
         if (!res.user?.emailVerified) {
           toast.error("Your email is not verified.");
           return;
         }
+
         setUser(res.user);
         toast.success("Signin successful");
       })
@@ -60,25 +62,18 @@ const Login = () => {
       .catch((e) => toast.error(e.message));
   };
 
-  // Handle forgot password
-  const handleForgetPassword = () => {
-    const email = emailRef.current.value;
-    if (!email) {
-      toast.error("Please enter your email first!");
-      return;
-    }
+  // 👉 Redirect to Forgot Password page with email
+  const handleForgetPasswordPage = () => {
+    const email = emailRef.current?.value || "";
 
-    sendPassResetEmailFunc(email)
-      .then(() => {
-        setLoading(false);
-        toast.success("Check your email to reset password");
-      })
-      .catch((e) => toast.error(e.message));
+    navigate("/forgot-password", {
+      state: { email }, // passing email to the route
+    });
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#FCE7F3] via-[#FFF5EB] to-[#F3F4F6] relative overflow-hidden">
-      {/* Floating background blobs */}
+
       <div className="absolute inset-0">
         <div className="absolute w-72 h-72 bg-pink-200/40 rounded-full blur-3xl top-5 left-10"></div>
         <div className="absolute w-72 h-72 bg-orange-200/40 rounded-full blur-3xl bottom-10 right-10"></div>
@@ -86,7 +81,8 @@ const Login = () => {
 
       <MyContainer>
         <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-10 p-6 lg:p-10 text-gray-800">
-          {/* Left Side */}
+
+          {/* Left Section */}
           <div className="max-w-lg text-center lg:text-left">
             <h1 className="text-5xl font-extrabold text-[#E0557E] drop-shadow-md">
               Welcome Back 🐾
@@ -100,7 +96,7 @@ const Login = () => {
           <div className="w-full max-w-md backdrop-blur-xl bg-white/60 border border-pink-200 shadow-xl rounded-2xl p-8">
             <form onSubmit={handleSignin} className="space-y-5">
               <h2 className="text-2xl font-semibold mb-3 text-center text-[#D9466E]">
-                Sign In
+                Login
               </h2>
 
               {/* Email */}
@@ -134,16 +130,16 @@ const Login = () => {
                 </span>
               </div>
 
-              {/* Forgot password */}
+              {/* Forgot Password → NEW LOGIC */}
               <button
                 className="hover:underline text-sm text-pink-600"
-                onClick={handleForgetPassword}
                 type="button"
+                onClick={handleForgetPasswordPage}
               >
                 Forgot password?
               </button>
 
-              {/* Submit */}
+              {/* Login Button */}
               <button
                 type="submit"
                 className="w-full bg-gradient-to-r from-pink-400 to-orange-300 text-white py-2 rounded-lg font-semibold hover:opacity-90"
@@ -158,7 +154,7 @@ const Login = () => {
                 <div className="h-px w-16 bg-gray-300"></div>
               </div>
 
-              {/* Google login */}
+              {/* Google Login */}
               <button
                 type="button"
                 onClick={handleGoogleSignin}
@@ -173,7 +169,7 @@ const Login = () => {
 
               <p className="text-center text-sm text-gray-700 mt-3">
                 Don’t have an account?{" "}
-                <Link className="text-pink-500 hover:text-pink-700 underline" to="/signup">
+                <Link className="text-pink-500 hover:text-ppink-700 underline" to="/signup">
                   Sign up
                 </Link>
               </p>

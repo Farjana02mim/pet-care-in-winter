@@ -170,7 +170,7 @@ const Signup = () => {
                   to="/signin"
                   className="text-pink-500 hover:text-pink-700 underline"
                 >
-                  Sign in
+                  Login
                 </Link>
               </p>
             </form>

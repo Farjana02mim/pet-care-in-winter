@@ -1,17 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const Card = ({ service }) => {
   const navigate = useNavigate();
   const { serviceId, serviceName, image, rating, price } = service;
+
+  useEffect(() => {
+    AOS.init({ duration: 800, once: true });
+  }, []);
 
   const handleViewDetails = () => {
     navigate(`/service/${serviceId}`); // ServiceDetails page match
   };
 
   return (
-    <div className="card bg-white rounded-xl shadow-md hover:shadow-xl hover:scale-105 transition-transform duration-300 overflow-hidden">
+    <div
+      data-aos="fade-up"
+      className="card bg-white rounded-xl shadow-md hover:shadow-xl hover:scale-105 transition-transform duration-300 overflow-hidden"
+    >
       <div className="p-4">
         <figure>
           <img
