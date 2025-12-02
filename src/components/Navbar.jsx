@@ -1,78 +1,144 @@
-import { Link, NavLink } from "react-router";
+import { Link } from "react-router";
 import logo from "../assets/logo.png";
 import MyContainer from "./MyContainer";
 import MyLink from "./MyLink";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { toast } from "react-toastify";
 import { ClockLoader } from "react-spinners";
 
 const Navbar = () => {
   const { user, signoutUserFunc, setUser, loading } = useContext(AuthContext);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const handleSignout = () => {
     signoutUserFunc()
       .then(() => {
-        toast.success("Signout successful");
+        toast.success("Sign out successful");
         setUser(null);
       })
       .catch((e) => toast.error(e.message));
   };
 
   return (
-    <div className="bg-gradient-to-r from-pink-500 via-orange-400 to-red-400 shadow-lg ">
-      <MyContainer className="flex items-center justify-between py-3">
-        
+    <div className="bg-gradient-to-r from-pink-500 via-orange-400 to-red-400 shadow-lg relative">
+      <MyContainer className="flex items-center justify-between py-3 relative">
         {/* Logo */}
         <div className="flex items-center gap-2">
-          <img src={logo} className="w-[45px]" />
+          <img src={logo} alt="Logo" className="w-[45px]" />
           <h1 className="text-white text-2xl font-semibold tracking-wide">
             WarmPaws
           </h1>
         </div>
 
-        {/* Links */}
-        <ul className="flex items-center gap-4 text-white font-medium">
+        {/* Desktop Links */}
+        <ul className="hidden lg:flex items-center gap-4 text-white font-medium">
           <li><MyLink to="/">Home</MyLink></li>
           <li><MyLink to="/services">Services</MyLink></li>
           {user && <li><MyLink to="/profile">My Profile</MyLink></li>}
         </ul>
 
-        {/* User Section */}
-        {loading ? (
-          <ClockLoader color="#fff" />
-        ) : user ? (
-          <div className="dropdown dropdown-end">
-            <label tabIndex={0}>
-              <img
-                src={user?.photoURL || "https://via.placeholder.com/100"}
-                className="h-[45px] w-[45px] rounded-full ring-2 ring-white cursor-pointer"
-                alt=""
-              />
-            </label>
+        {/* Right Section */}
+        <div className="flex items-center gap-3">
+          {loading ? (
+            <ClockLoader color="#fff" size={25} />
+          ) : user ? (
+            <div className="dropdown dropdown-end">
+              <label tabIndex={0}>
+                <img
+                  src={user.photoURL || "https://via.placeholder.com/100"}
+                  alt={user.displayName || "User Avatar"}
+                  title={user.displayName || "User"}
+                  className="h-[45px] w-[45px] rounded-full ring-2 ring-white cursor-pointer"
+                />
+              </label>
 
-            <ul
-              tabIndex={0}
-              className="dropdown-content menu p-4 space-y-2 shadow bg-base-100 rounded-box w-52"
-            >
-              <h2 className="text-lg font-semibold">{user?.displayName}</h2>
-              <p className="text-slate-600">{user?.email}</p>
-
-              <button
-                onClick={handleSignout}
-                className="btn btn-error btn-sm mt-2"
+              <ul
+                tabIndex={0}
+                className="dropdown-content menu p-4 space-y-2 shadow bg-base-100 rounded-box w-52"
               >
-                Sign Out
-              </button>
-            </ul>
+                <h2 className="text-lg font-semibold truncate" title={user.displayName}>
+                  {user.displayName}
+                </h2>
+                <p className="text-slate-600 truncate" title={user.email}>
+                  {user.email}
+                </p>
+
+                <button
+                  onClick={handleSignout}
+                  className="btn btn-error btn-sm mt-2 w-full"
+                >
+                  Logout
+                </button>
+              </ul>
+            </div>
+          ) : (
+            <div className="hidden lg:flex gap-2">
+              <Link
+                to="/signin"
+                className="px-4 py-2 bg-white text-pink-600 font-semibold rounded-lg hover:bg-slate-100 transition"
+              >
+                Login
+              </Link>
+              <Link
+                to="/signup"
+                className="px-4 py-2 bg-white text-pink-600 font-semibold rounded-lg hover:bg-slate-100 transition"
+              >
+                Register
+              </Link>
+            </div>
+          )}
+
+          {/* Mobile Hamburger Button */}
+          <div className="lg:hidden">
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="text-white focus:outline-none"
+            >
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                ></path>
+              </svg>
+            </button>
           </div>
-        ) : (
-          <Link
-            to="/signin"
-            className="px-5 py-2 bg-white text-pink-600 font-semibold rounded-lg hover:bg-slate-100 transition"
-          >
-            Sign In
-          </Link>
+        </div>
+
+        {/* Mobile Menu Dropdown */}
+        {menuOpen && (
+          <ul className="absolute top-full left-0 w-full bg-pink-500 text-white flex flex-col gap-2 p-4 lg:hidden z-20">
+            <li><MyLink to="/" onClick={() => setMenuOpen(false)}>Home</MyLink></li>
+            <li><MyLink to="/services" onClick={() => setMenuOpen(false)}>Services</MyLink></li>
+            {user && <li><MyLink to="/profile" onClick={() => setMenuOpen(false)}>My Profile</MyLink></li>}
+
+            {!user && (
+              <div className="flex flex-col gap-2 mt-2">
+                <Link
+                  to="/signin"
+                  className="px-4 py-2 bg-white text-pink-600 font-semibold rounded-lg hover:bg-slate-100 transition"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/signup"
+                  className="px-4 py-2 bg-white text-pink-600 font-semibold rounded-lg hover:bg-slate-100 transition"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Register
+                </Link>
+              </div>
+            )}
+          </ul>
         )}
       </MyContainer>
     </div>
