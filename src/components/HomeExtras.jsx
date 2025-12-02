@@ -1,10 +1,13 @@
-import React from "react";
+import expert1 from "../assets/expert1.avif";
+import expert2 from "../assets/expert2.avif";
+import expert3 from "../assets/expert3.avif";
 
 const experts = [
-  { id: 1, name: "Dr. Sarah White", photo: "/assets/expert1.jpg", title: "Veterinarian" },
-  { id: 2, name: "Dr. John Doe", photo: "/assets/expert2.jpg", title: "Pet Nutritionist" },
-  { id: 3, name: "Dr. Emily Clark", photo: "/assets/expert3.jpg", title: "Animal Behaviorist" },
+  { id: 1, name: "Dr. Sarah White", photo: expert1, title: "Veterinarian" },
+  { id: 2, name: "Dr. John Doe", photo: expert2, title: "Pet Nutritionist" },
+  { id: 3, name: "Dr. Emily Clark", photo: expert3, title: "Animal Behaviorist" },
 ];
+
 
 const HomeExtras = () => {
   return (

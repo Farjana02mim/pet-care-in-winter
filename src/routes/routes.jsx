@@ -3,7 +3,8 @@ import MainLayout from "../layout/MainLayout";
 import Homepage from "../pages/Homepage";
 import Profile from "../pages/Profile";
 import Signup from "../pages/Signup";
-import Signin from "../pages/Signin";
+import Signin from "../pages/Login";
+import ServiceDetails from "../pages/ServiceDetails"; // import this
 import PrivateRoute from "../privateRoute/PrivateRoute";
 
 export const router = createBrowserRouter([
@@ -30,6 +31,10 @@ export const router = createBrowserRouter([
       {
         path: "/signin",
         element: <Signin />,
+      },
+      {
+        path: "/service/:id", // <-- add this
+        element: <ServiceDetails />,
       },
     ],
   },

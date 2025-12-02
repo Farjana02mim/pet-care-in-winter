@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useRef, useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import MyContainer from "../components/MyContainer";
 import { FaEye } from "react-icons/fa";
@@ -6,9 +6,8 @@ import { IoEyeOff } from "react-icons/io5";
 import { toast } from "react-toastify";
 import { AuthContext } from "../context/AuthContext";
 
-const Signin = () => {
+const Login = () => {
   const [show, setShow] = useState(false);
-
   const {
     signInWithEmailAndPasswordFunc,
     signInWithEmailFunc,
@@ -19,16 +18,19 @@ const Signin = () => {
   } = useContext(AuthContext);
 
   const location = useLocation();
-  const from = location.state || "/";
   const navigate = useNavigate();
-
-  if (user) {
-    navigate("/");
-    return;
-  }
+  const from = location.state?.from?.pathname || "/";
 
   const emailRef = useRef(null);
 
+  // ✅ Navigate if user is already logged in
+  useEffect(() => {
+    if (user) {
+      navigate(from, { replace: true });
+    }
+  }, [user, navigate, from]);
+
+  // Handle email/password login
   const handleSignin = (e) => {
     e.preventDefault();
     const email = e.target.email?.value;
@@ -43,22 +45,22 @@ const Signin = () => {
         }
         setUser(res.user);
         toast.success("Signin successful");
-        navigate(from);
       })
       .catch((e) => toast.error(e.message));
   };
 
+  // Handle Google login
   const handleGoogleSignin = () => {
     signInWithEmailFunc()
       .then((res) => {
         setLoading(false);
         setUser(res.user);
-        navigate(from);
         toast.success("Signin successful");
       })
       .catch((e) => toast.error(e.message));
   };
 
+  // Handle forgot password
   const handleForgetPassword = () => {
     const email = emailRef.current.value;
     if (!email) {
@@ -76,7 +78,6 @@ const Signin = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#FCE7F3] via-[#FFF5EB] to-[#F3F4F6] relative overflow-hidden">
-
       {/* Floating background blobs */}
       <div className="absolute inset-0">
         <div className="absolute w-72 h-72 bg-pink-200/40 rounded-full blur-3xl top-5 left-10"></div>
@@ -85,7 +86,6 @@ const Signin = () => {
 
       <MyContainer>
         <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-10 p-6 lg:p-10 text-gray-800">
-
           {/* Left Side */}
           <div className="max-w-lg text-center lg:text-left">
             <h1 className="text-5xl font-extrabold text-[#E0557E] drop-shadow-md">
@@ -98,7 +98,6 @@ const Signin = () => {
 
           {/* Login Card */}
           <div className="w-full max-w-md backdrop-blur-xl bg-white/60 border border-pink-200 shadow-xl rounded-2xl p-8">
-
             <form onSubmit={handleSignin} className="space-y-5">
               <h2 className="text-2xl font-semibold mb-3 text-center text-[#D9466E]">
                 Sign In
@@ -113,20 +112,20 @@ const Signin = () => {
                   ref={emailRef}
                   placeholder="your@email.com"
                   className="input input-bordered w-full bg-white/80 text-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-300"
+                  required
                 />
               </div>
 
-              {/* Password*/}
+              {/* Password */}
               <div className="relative">
                 <label className="block text-sm mb-1 text-gray-700">Password</label>
                 <input
                   type={show ? "text" : "password"}
                   name="password"
                   placeholder="••••••••"
-                  className="input input-bordered w-full bg-white/80 text-gray-700 
-                             focus:outline-none focus:ring-2 focus:ring-orange-300 pr-12"
+                  className="input input-bordered w-full bg-white/80 text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-300 pr-12"
+                  required
                 />
-
                 <span
                   onClick={() => setShow(!show)}
                   className="absolute right-3 top-[50%] -translate-y-[-10%] cursor-pointer text-gray-600 z-50"
@@ -159,7 +158,7 @@ const Signin = () => {
                 <div className="h-px w-16 bg-gray-300"></div>
               </div>
 
-              {/* Google only */}
+              {/* Google login */}
               <button
                 type="button"
                 onClick={handleGoogleSignin}
@@ -179,7 +178,6 @@ const Signin = () => {
                 </Link>
               </p>
             </form>
-
           </div>
         </div>
       </MyContainer>
@@ -187,4 +185,4 @@ const Signin = () => {
   );
 };
 
-export default Signin;
+export default Login;
