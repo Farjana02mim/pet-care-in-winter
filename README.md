@@ -2,8 +2,8 @@
 
 **Purpose:** A cozy winter companion platform for pet owners to find local winter pet services (clothing, grooming, heated equipment, nutrition & more), book services, and access winter care tips.
 
-**Live link:** YOUR_DEPLOY_URL_HERE  
-**GitHub:** YOUR_GITHUB_REPO_URL_HERE
+**Live link:** https://petcare-009.netlify.app/  
+**GitHub:** https://github.com/Farjana02mim/pet-care-in-winter.git
 
 ## Key features
 - User authentication with Firebase (Email/Password + Google sign-in)
@@ -39,7 +39,5 @@
 ## Environment variables
 See `.env.example` in the repo for required keys.
 
-## Notes
-- Ensure you add the deployed domain to Firebase Auth authorized domains.
-- Add at least 10 meaningful git commits while developing.
+
 

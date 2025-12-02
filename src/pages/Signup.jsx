@@ -8,6 +8,7 @@ import { AuthContext } from "../context/AuthContext";
 
 const Signup = () => {
   const [show, setShow] = useState(false);
+  const [loadingBtn, setLoadingBtn] = useState(false);
 
   const {
     createUserWithEmailAndPasswordFunc,
@@ -16,12 +17,12 @@ const Signup = () => {
     setLoading,
     signoutUserFunc,
     sendEmailVerificationFunc,
-    googleSignInFunc,
+    signInWithEmailFunc, // Google sign-in
   } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
-  // Password validation function
+  // Password validation
   const validatePassword = (password) => {
     if (password.length < 6) {
       toast.error("Password must be at least 6 characters long");
@@ -39,59 +40,57 @@ const Signup = () => {
   };
 
   // Handle Signup
-  const handleSignup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
+    setLoadingBtn(true);
 
     const displayName = e.target.name?.value;
     const photoURL = e.target.photo?.value;
     const email = e.target.email?.value;
     const password = e.target.password?.value;
 
-    if (!validatePassword(password)) return;
+    if (!validatePassword(password)) {
+      setLoadingBtn(false);
+      return;
+    }
 
-    createUserWithEmailAndPasswordFunc(email, password)
-      .then(() => {
-        updateProfileFunc(displayName, photoURL)
-          .then(() => {
-            sendEmailVerificationFunc()
-              .then(() => {
-                setLoading(false);
-                signoutUserFunc().then(() => {
-                  setUser(null);
-                  toast.success(
-                    "Signup successful! Check your email to verify ❄️"
-                  );
-                  navigate("/signin");
-                });
-              })
-              .catch((err) => toast.error(err.message));
-          })
-          .catch((err) => toast.error(err.message));
-      })
-      .catch((err) => {
-        if (err.code === "auth/email-already-in-use") {
-          toast.error("User already exists!");
-        } else {
-          toast.error(err.message);
-        }
-      });
+    try {
+      await createUserWithEmailAndPasswordFunc(email, password);
+      await updateProfileFunc(displayName, photoURL);
+      await sendEmailVerificationFunc();
+      await signoutUserFunc();
+      setUser(null);
+      toast.success("Signup successful! Check your email to verify ❄️");
+      navigate("/signin");
+    } catch (err) {
+      if (err.code === "auth/email-already-in-use") {
+        toast.error("User already exists!");
+      } else {
+        toast.error(err.message);
+      }
+    } finally {
+      setLoadingBtn(false);
+    }
   };
 
-  // Handle Google Signin
-  const handleGoogleSignin = () => {
-    googleSignInFunc()
-      .then((res) => {
-        setUser(res.user);
-        toast.success("Signed in with Google!");
-        navigate("/"); // Redirect to homepage
-      })
-      .catch((err) => toast.error(err.message));
+  // Handle Google Sign-in
+  const handleGoogleSignin = async () => {
+    setLoadingBtn(true);
+    try {
+      const res = await signInWithEmailFunc();
+      setUser(res.user);
+      toast.success("Signed in with Google!");
+      navigate("/");
+    } catch (err) {
+      toast.error(err.message);
+    } finally {
+      setLoadingBtn(false);
+    }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#FCE7F3] via-[#FFF5EB] to-[#F3F4F6] relative overflow-hidden">
-
-      {/* Floating soft color blobs */}
+      {/* Floating blobs */}
       <div className="absolute inset-0">
         <div className="absolute w-72 h-72 bg-pink-200/40 rounded-full blur-3xl top-10 left-10"></div>
         <div className="absolute w-72 h-72 bg-orange-200/40 rounded-full blur-3xl bottom-10 right-10"></div>
@@ -99,7 +98,6 @@ const Signup = () => {
 
       <MyContainer>
         <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-10 p-6 lg:p-10 text-gray-800">
-
           {/* Left text */}
           <div className="max-w-lg text-center lg:text-left">
             <h1 className="text-5xl font-extrabold text-[#E0557E] drop-shadow">
@@ -119,9 +117,7 @@ const Signup = () => {
             <form onSubmit={handleSignup} className="space-y-4">
               {/* Name */}
               <div>
-                <label className="block text-sm font-medium mb-1 text-gray-700">
-                  Name
-                </label>
+                <label className="block text-sm font-medium mb-1 text-gray-700">Name</label>
                 <input
                   type="text"
                   name="name"
@@ -133,9 +129,7 @@ const Signup = () => {
 
               {/* Photo */}
               <div>
-                <label className="block text-sm font-medium mb-1 text-gray-700">
-                  Photo URL
-                </label>
+                <label className="block text-sm font-medium mb-1 text-gray-700">Photo URL</label>
                 <input
                   type="text"
                   name="photo"
@@ -146,9 +140,7 @@ const Signup = () => {
 
               {/* Email */}
               <div>
-                <label className="block text-sm font-medium mb-1 text-gray-700">
-                  Email
-                </label>
+                <label className="block text-sm font-medium mb-1 text-gray-700">Email</label>
                 <input
                   type="email"
                   name="email"
@@ -160,9 +152,7 @@ const Signup = () => {
 
               {/* Password */}
               <div className="relative">
-                <label className="block text-sm mb-1 text-gray-700">
-                  Password
-                </label>
+                <label className="block text-sm mb-1 text-gray-700">Password</label>
                 <input
                   type={show ? "text" : "password"}
                   name="password"
@@ -181,9 +171,14 @@ const Signup = () => {
               {/* Register Button */}
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r from-pink-400 to-orange-300 text-white py-2 rounded-lg font-semibold hover:opacity-90"
+                disabled={loadingBtn}
+                className={`w-full text-white py-2 rounded-lg font-semibold ${
+                  loadingBtn
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-gradient-to-r from-pink-400 to-orange-300 hover:opacity-90"
+                }`}
               >
-                Register
+                {loadingBtn ? "Processing..." : "Register"}
               </button>
 
               {/* Google login + Login link */}
@@ -191,14 +186,19 @@ const Signup = () => {
                 <button
                   type="button"
                   onClick={handleGoogleSignin}
-                  className="flex items-center justify-center gap-3 bg-white border border-gray-300 text-gray-800 px-5 py-2 rounded-lg w-full font-semibold hover:bg-gray-50"
+                  disabled={loadingBtn}
+                  className={`flex items-center justify-center gap-3 px-5 py-2 rounded-lg w-full font-semibold border ${
+                    loadingBtn
+                      ? "bg-gray-300 cursor-not-allowed"
+                      : "bg-white border-gray-300 hover:bg-gray-50"
+                  }`}
                 >
                   <img
                     src="https://www.svgrepo.com/show/475656/google-color.svg"
                     className="w-5 h-5"
                     alt="Google"
                   />
-                  Continue with Google
+                  {loadingBtn ? "Processing..." : "Continue with Google"}
                 </button>
                 <Link
                   to="/signin"

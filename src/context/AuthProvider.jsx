@@ -21,18 +21,11 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  console.log(auth);
+  const createUserWithEmailAndPasswordFunc = (email, password) =>
+    createUserWithEmailAndPassword(auth, email, password);
 
-  const createUserWithEmailAndPasswordFunc = (email, password) => {
-    return createUserWithEmailAndPassword(auth, email, password);
-  };
-
-  const updateProfileFunc = (displayName, photoURL) => {
-    return updateProfile(auth.currentUser, {
-      displayName,
-      photoURL,
-    });
-  };
+  const updateProfileFunc = (displayName, photoURL) =>
+    updateProfile(auth.currentUser, { displayName, photoURL });
 
   const sendEmailVerificationFunc = () => {
     setLoading(true);
@@ -43,10 +36,12 @@ const AuthProvider = ({ children }) => {
     setLoading(true);
     return signInWithEmailAndPassword(auth, email, password);
   };
+
   const signInWithEmailFunc = () => {
     setLoading(true);
     return signInWithPopup(auth, googleProvider);
   };
+
   const signInWithGithubFunc = () => {
     setLoading(true);
     return signInWithPopup(auth, githubProvider);
@@ -56,6 +51,7 @@ const AuthProvider = ({ children }) => {
     setLoading(true);
     return signOut(auth);
   };
+
   const sendPassResetEmailFunc = (email) => {
     setLoading(true);
     return sendPasswordResetEmail(auth, email);
@@ -64,6 +60,8 @@ const AuthProvider = ({ children }) => {
   const authInfo = {
     user,
     setUser,
+    loading,
+    setLoading,
     createUserWithEmailAndPasswordFunc,
     signInWithEmailAndPasswordFunc,
     signInWithEmailFunc,
@@ -72,23 +70,22 @@ const AuthProvider = ({ children }) => {
     sendPassResetEmailFunc,
     sendEmailVerificationFunc,
     updateProfileFunc,
-    loading,
-    setLoading,
   };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currUser) => {
-      console.log(currUser);
       setUser(currUser);
       setLoading(false);
     });
 
-    return () => {
-      unsubscribe();
-    };
+    return () => unsubscribe();
   }, []);
 
-  return <AuthContext value={authInfo}>{children}</AuthContext>;
+  return (
+    <AuthContext.Provider value={authInfo}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export default AuthProvider;
