@@ -1,11 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Banner from "../components/Banner";
-import ServiceCard from "../components/ServiceCard";
+import Card from "../components/Card";
 import ExpertVets from "../components/ExpertVets";
-import { servicesData, tipsData } from "../data/fakeData";
-
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
+  const [services, setServices] = useState([]);
+
+  useEffect(() => {
+    // Fetch JSON data from public folder or src/data
+    fetch("/services.json")
+      .then((res) => res.json())
+      .then((data) => setServices(data))
+      .catch((err) => console.error(err));
+  }, []);
+
   return (
     <div className="space-y-20">
 
@@ -18,8 +27,8 @@ const HomePage = () => {
       <section className="w-11/12 mx-auto">
         <h2 className="text-3xl font-bold text-center mb-8">Popular Winter Care Services</h2>
         <div className="grid md:grid-cols-3 gap-8">
-          {servicesData.map((service) => (
-            <ServiceCard key={service.id} service={service} />
+          {services.map((service) => (
+            <Card key={service.id} service={service} />
           ))}
         </div>
       </section>
@@ -27,14 +36,7 @@ const HomePage = () => {
       {/* 3️⃣ Winter Care Tips */}
       <section className="w-11/12 mx-auto">
         <h2 className="text-3xl font-bold text-center mb-8">Winter Care Tips for Pets</h2>
-        <div className="grid md:grid-cols-3 gap-6">
-          {tipsData.map((tip, idx) => (
-            <div key={idx} className="bg-white/10 p-5 rounded-lg shadow-md text-white">
-              <h3 className="text-xl font-semibold mb-2">{tip.title}</h3>
-              <p className="text-white/90">{tip.description}</p>
-            </div>
-          ))}
-        </div>
+        {/* You can add tips JSON mapping here if needed */}
       </section>
 
       {/* 4️⃣ Meet Our Expert Vets */}
