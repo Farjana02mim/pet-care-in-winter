@@ -5,28 +5,28 @@ const accessoriesData = [
   {
     id: 1,
     name: "Cozy Dog Sweater",
-    image: "https://i.postimg.cc/example-sweater.png",
+    image: "https://i.ibb.co.com/p67hfHCM/photo-1576078094990-536fdfb303bc.jpg",
     price: 20,
   },
   {
     id: 2,
     name: "Warm Cat Hoodie",
-    image: "https://i.postimg.cc/example-hoodie.png",
+    image: "https://i.ibb.co.com/5XLfHcWN/photo-1753415189714-77ebd60ac1da.jpg",
     price: 18,
   },
   {
     id: 3,
     name: "Furry Boots for Dogs",
-    image: "https://i.postimg.cc/example-boots.png",
+    image: "https://i.ibb.co.com/CKPF45zc/istockphoto-2199963865-612x612.webp",
     price: 15,
   },
 ];
 
 const ExtraSection = () => {
   return (
-    <section className="py-12 bg-gray-50">
+    <section className="py-12">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-8 text-pink-500">
+        <h2 className="text-3xl font-bold text-center mb-8 text-gray-700">
           Winter Pet Accessories ❄️
         </h2>
 

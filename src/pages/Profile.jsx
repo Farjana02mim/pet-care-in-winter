@@ -40,7 +40,7 @@ const Profile = () => {
       <ToastContainer />
 
       <h1 className="text-4xl md:text-6xl font-extrabold text-gray-800 drop-shadow-lg">
-        🐶 Pet Winter Profile
+        Your Profile
       </h1>
 
       {user ? (
