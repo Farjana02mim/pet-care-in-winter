@@ -2,7 +2,7 @@
 
 **Purpose:** A cozy winter companion platform for pet owners to find local winter pet services (clothing, grooming, heated equipment, nutrition & more), book services, and access winter care tips.
 
-**Live link:** https://petcare-009.netlify.app/  
+**Live link:** https://lighthearted-youtiao-7918d0.netlify.app/  
 **GitHub:** https://github.com/Farjana02mim/pet-care-in-winter.git
 
 ## Key features
