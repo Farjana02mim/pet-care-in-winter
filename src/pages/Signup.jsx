@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router-dom";
 import { FaEye } from "react-icons/fa";
 import { IoEyeOff } from "react-icons/io5";
 import MyContainer from "../components/MyContainer";
@@ -12,14 +12,33 @@ const Signup = () => {
   const {
     createUserWithEmailAndPasswordFunc,
     updateProfileFunc,
-    sendEmailVerificationFunc,
+    setUser,
     setLoading,
     signoutUserFunc,
-    setUser,
+    sendEmailVerificationFunc,
+    googleSignInFunc,
   } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
+  // Password validation function
+  const validatePassword = (password) => {
+    if (password.length < 6) {
+      toast.error("Password must be at least 6 characters long");
+      return false;
+    }
+    if (!/[A-Z]/.test(password)) {
+      toast.error("Password must include at least one uppercase letter");
+      return false;
+    }
+    if (!/[a-z]/.test(password)) {
+      toast.error("Password must include at least one lowercase letter");
+      return false;
+    }
+    return true;
+  };
+
+  // Handle Signup
   const handleSignup = (e) => {
     e.preventDefault();
 
@@ -28,24 +47,15 @@ const Signup = () => {
     const email = e.target.email?.value;
     const password = e.target.password?.value;
 
-    const regExp =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#^()\-_=+])[A-Za-z\d@$!%*?&#^()\-_=+]{8,}$/;
-
-    if (!regExp.test(password)) {
-      toast.error(
-        "Password must include uppercase, lowercase, number & special character"
-      );
-      return;
-    }
+    if (!validatePassword(password)) return;
 
     createUserWithEmailAndPasswordFunc(email, password)
-      .then((res) => {
+      .then(() => {
         updateProfileFunc(displayName, photoURL)
           .then(() => {
             sendEmailVerificationFunc()
               .then(() => {
                 setLoading(false);
-
                 signoutUserFunc().then(() => {
                   setUser(null);
                   toast.success(
@@ -54,17 +64,28 @@ const Signup = () => {
                   navigate("/signin");
                 });
               })
-              .catch((e) => toast.error(e.message));
+              .catch((err) => toast.error(err.message));
           })
-          .catch((e) => toast.error(e.message));
+          .catch((err) => toast.error(err.message));
       })
-      .catch((e) => {
-        if (e.code === "auth/email-already-in-use") {
+      .catch((err) => {
+        if (err.code === "auth/email-already-in-use") {
           toast.error("User already exists!");
         } else {
-          toast.error(e.message);
+          toast.error(err.message);
         }
       });
+  };
+
+  // Handle Google Signin
+  const handleGoogleSignin = () => {
+    googleSignInFunc()
+      .then((res) => {
+        setUser(res.user);
+        toast.success("Signed in with Google!");
+        navigate("/"); // Redirect to homepage
+      })
+      .catch((err) => toast.error(err.message));
   };
 
   return (
@@ -85,8 +106,7 @@ const Signup = () => {
               Create Your Account 🐾
             </h1>
             <p className="mt-4 text-lg text-gray-700 leading-relaxed">
-              Join the winter pet care community and keep your furry friends warm
-              and happy ❄️🐶
+              Join the winter pet care community and keep your furry friends warm and happy ❄️🐶
             </p>
           </div>
 
@@ -107,6 +127,7 @@ const Signup = () => {
                   name="name"
                   placeholder="Pet Lover"
                   className="input input-bordered w-full bg-white/80 text-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-300"
+                  required
                 />
               </div>
 
@@ -133,46 +154,59 @@ const Signup = () => {
                   name="email"
                   placeholder="your@email.com"
                   className="input input-bordered w-full bg-white/80 text-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-300"
+                  required
                 />
               </div>
 
               {/* Password */}
               <div className="relative">
-                <label className="block text-sm font-medium mb-1 text-gray-700">
+                <label className="block text-sm mb-1 text-gray-700">
                   Password
                 </label>
                 <input
                   type={show ? "text" : "password"}
                   name="password"
                   placeholder="••••••••"
-                  className="input input-bordered w-full bg-white/80 text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-300"
+                  className="input input-bordered w-full bg-white/80 text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-300 pr-12"
+                  required
                 />
                 <span
                   onClick={() => setShow(!show)}
-                  className="absolute right-3 top-[38px] cursor-pointer text-gray-600"
+                  className="absolute right-3 top-[50%] -translate-y-[-10%] cursor-pointer text-gray-600 z-50"
                 >
-                  {show ? <FaEye /> : <IoEyeOff />}
+                  {show ? <FaEye size={22} /> : <IoEyeOff size={22} />}
                 </span>
               </div>
 
-              {/* Submit */}
+              {/* Register Button */}
               <button
                 type="submit"
                 className="w-full bg-gradient-to-r from-pink-400 to-orange-300 text-white py-2 rounded-lg font-semibold hover:opacity-90"
               >
-                Sign Up
+                Register
               </button>
 
-              {/* Have account */}
-              <p className="text-center text-sm text-gray-700 mt-3">
-                Already have an account?{" "}
+              {/* Google login + Login link */}
+              <div className="flex flex-col gap-2 mt-2 text-center">
+                <button
+                  type="button"
+                  onClick={handleGoogleSignin}
+                  className="flex items-center justify-center gap-3 bg-white border border-gray-300 text-gray-800 px-5 py-2 rounded-lg w-full font-semibold hover:bg-gray-50"
+                >
+                  <img
+                    src="https://www.svgrepo.com/show/475656/google-color.svg"
+                    className="w-5 h-5"
+                    alt="Google"
+                  />
+                  Continue with Google
+                </button>
                 <Link
                   to="/signin"
                   className="text-pink-500 hover:text-pink-700 underline"
                 >
-                  Login
+                  Already have an account? Login
                 </Link>
-              </p>
+              </div>
             </form>
           </div>
         </div>

@@ -3,6 +3,7 @@ import Banner from "../components/Banner";
 import Card from "../components/Card";
 import HomeExtras from "../components/HomeExtras"; // Tips + Experts
 import { tipsData } from "../data/fakeData";
+import ExtraSection from "./ExtraSection";
 
 const HomePage = () => {
   const [services, setServices] = useState([]);
@@ -48,6 +49,10 @@ const HomePage = () => {
       {/* Expert Vets */}
       <section className="w-11/12 mx-auto">
         <HomeExtras />
+      </section>
+      {/* Extra Section */}
+      <section className="w-11/12 mx-auto">
+        <ExtraSection />
       </section>
     </div>
   );

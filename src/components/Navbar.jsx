@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import logo from "../assets/logo.png";
 import MyContainer from "./MyContainer";
 import MyLink from "./MyLink";
@@ -43,34 +43,19 @@ const Navbar = () => {
           {loading ? (
             <ClockLoader color="#fff" size={25} />
           ) : user ? (
-            <div className="dropdown dropdown-end">
-              <label tabIndex={0}>
-                <img
-                  src={user.photoURL || "https://via.placeholder.com/100"}
-                  alt={user.displayName || "User Avatar"}
-                  title={user.displayName || "User"}
-                  className="h-[45px] w-[45px] rounded-full ring-2 ring-white cursor-pointer"
-                />
-              </label>
-
-              <ul
-                tabIndex={0}
-                className="dropdown-content menu p-4 space-y-2 shadow bg-base-100 rounded-box w-52"
+            <div className="flex items-center gap-2">
+              <img
+                src={user.photoURL || "https://via.placeholder.com/100"}
+                alt={user.displayName || "User Avatar"}
+                title={user.displayName || "User"}
+                className="h-[45px] w-[45px] rounded-full ring-2 ring-white"
+              />
+              <button
+                onClick={handleSignout}
+                className="px-3 py-1 bg-white font-bold text-red-700 rounded-lg hover:text-white hover:bg-red-600 transition"
               >
-                <h2 className="text-lg font-semibold truncate" title={user.displayName}>
-                  {user.displayName}
-                </h2>
-                <p className="text-slate-600 truncate" title={user.email}>
-                  {user.email}
-                </p>
-
-                <button
-                  onClick={handleSignout}
-                  className="btn btn-error btn-sm mt-2 w-full"
-                >
-                  Logout
-                </button>
-              </ul>
+                Logout
+              </button>
             </div>
           ) : (
             <div className="hidden lg:flex gap-2">
