@@ -1,7 +1,6 @@
-// PopularServices.jsx
 import React from "react";
 import ServiceCard from "./Card";
-import servicesData from "../data/fakeData"; // JSON file
+import servicesData from "../data/fakeData"; 
 
 const PopularServices = () => {
   return (

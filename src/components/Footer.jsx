@@ -11,7 +11,7 @@ const Footer = () => {
       <div className="w-11/12 mx-auto">
         <div className="grid md:grid-cols-4 gap-10">
 
-          {/* About */}
+
           <div className="space-y-4 max-w-sm">
             <Link to="/" className="flex gap-2 items-center">
               <img className="h-[45px] w-[45px]" src={logo} alt="Logo" />
@@ -23,7 +23,7 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Quick Links */}
+          
           <div>
             <h4 className="text-xl font-semibold mb-3">Quick Links</h4>
             <ul className="space-y-2 text-white/90">
@@ -39,7 +39,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Info / Legal */}
+          
           <div>
             <h4 className="text-xl font-semibold mb-3">Info</h4>
             <ul className="space-y-2 text-white/90">
@@ -55,7 +55,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Social / Contact */}
+          
           <div>
             <h4 className="text-xl font-semibold mb-3">Follow Us</h4>
             <ul className="space-y-3 text-sm">
@@ -77,7 +77,7 @@ const Footer = () => {
 
         <hr className="border-white/30 mt-10" />
 
-        {/* Bottom */}
+        
         <div className="text-center py-6 text-white/90 text-sm">
           © {new Date().getFullYear()} WarmPaws. All rights reserved.
         </div>

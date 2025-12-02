@@ -5,7 +5,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
-// Images import
+
 import slide1 from "../assets/slide1.webp";
 import slide2 from "../assets/slide2.avif";
 import slide3 from "../assets/slide3.webp";

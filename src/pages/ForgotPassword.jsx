@@ -6,7 +6,7 @@ import { toast } from "react-hot-toast";
 const ForgotPassword = () => {
   const { sendPassResetEmailFunc } = useContext(AuthContext);
 
-  // Get email passed from login page
+  
   const location = useLocation();
   const passedEmail = location.state?.email || "";
 
@@ -22,7 +22,7 @@ const ForgotPassword = () => {
       await sendPassResetEmailFunc(email);
       toast.success("Password reset email sent!");
 
-      // Redirect user to Gmail
+      
       window.location.href = "https://mail.google.com/";
     } catch (err) {
       toast.error(err.message);

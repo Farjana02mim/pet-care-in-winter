@@ -17,12 +17,12 @@ const Signup = () => {
     setLoading,
     signoutUserFunc,
     sendEmailVerificationFunc,
-    signInWithEmailFunc, // Google sign-in
+    signInWithEmailFunc, 
   } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
-  // Password validation
+  
   const validatePassword = (password) => {
     if (password.length < 6) {
       toast.error("Password must be at least 6 characters long");
@@ -39,7 +39,7 @@ const Signup = () => {
     return true;
   };
 
-  // Handle Signup
+  
   const handleSignup = async (e) => {
     e.preventDefault();
     setLoadingBtn(true);
@@ -73,7 +73,7 @@ const Signup = () => {
     }
   };
 
-  // Handle Google Sign-in
+  
   const handleGoogleSignin = async () => {
     setLoadingBtn(true);
     try {
@@ -90,7 +90,7 @@ const Signup = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#FCE7F3] via-[#FFF5EB] to-[#F3F4F6] relative overflow-hidden">
-      {/* Floating blobs */}
+     
       <div className="absolute inset-0">
         <div className="absolute w-72 h-72 bg-pink-200/40 rounded-full blur-3xl top-10 left-10"></div>
         <div className="absolute w-72 h-72 bg-orange-200/40 rounded-full blur-3xl bottom-10 right-10"></div>
@@ -98,7 +98,7 @@ const Signup = () => {
 
       <MyContainer>
         <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-10 p-6 lg:p-10 text-gray-800">
-          {/* Left text */}
+         
           <div className="max-w-lg text-center lg:text-left">
             <h1 className="text-5xl font-extrabold text-[#E0557E] drop-shadow">
               Create Your Account 🐾
@@ -108,14 +108,14 @@ const Signup = () => {
             </p>
           </div>
 
-          {/* Signup card */}
+          
           <div className="w-full max-w-md backdrop-blur-xl bg-white/60 border border-pink-200 shadow-xl rounded-2xl p-8">
             <h2 className="text-2xl font-semibold mb-4 text-center text-[#D9466E]">
               Sign Up
             </h2>
 
             <form onSubmit={handleSignup} className="space-y-4">
-              {/* Name */}
+              
               <div>
                 <label className="block text-sm font-medium mb-1 text-gray-700">Name</label>
                 <input
@@ -127,7 +127,7 @@ const Signup = () => {
                 />
               </div>
 
-              {/* Photo */}
+              
               <div>
                 <label className="block text-sm font-medium mb-1 text-gray-700">Photo URL</label>
                 <input
@@ -138,7 +138,7 @@ const Signup = () => {
                 />
               </div>
 
-              {/* Email */}
+              
               <div>
                 <label className="block text-sm font-medium mb-1 text-gray-700">Email</label>
                 <input
@@ -150,7 +150,7 @@ const Signup = () => {
                 />
               </div>
 
-              {/* Password */}
+              
               <div className="relative">
                 <label className="block text-sm mb-1 text-gray-700">Password</label>
                 <input
@@ -168,7 +168,7 @@ const Signup = () => {
                 </span>
               </div>
 
-              {/* Register Button */}
+              
               <button
                 type="submit"
                 disabled={loadingBtn}
@@ -181,7 +181,7 @@ const Signup = () => {
                 {loadingBtn ? "Processing..." : "Register"}
               </button>
 
-              {/* Google login + Login link */}
+              
               <div className="flex flex-col gap-2 mt-2 text-center">
                 <button
                   type="button"

@@ -13,7 +13,7 @@ const Card = ({ service }) => {
   }, []);
 
   const handleViewDetails = () => {
-    navigate(`/service/${serviceId}`); // ServiceDetails page match
+    navigate(`/service/${serviceId}`);
   };
 
   return (

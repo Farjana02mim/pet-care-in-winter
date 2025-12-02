@@ -7,10 +7,10 @@ import "react-toastify/dist/ReactToastify.css";
 const Profile = () => {
   const { user } = useContext(AuthContext);
 
-  // Toggle form
+
   const [showForm, setShowForm] = useState(false);
 
-  // Form states
+  
   const [name, setName] = useState(user?.displayName || "");
   const [photo, setPhoto] = useState(user?.photoURL || "");
 
@@ -27,7 +27,7 @@ const Profile = () => {
         position: "top-center",
       });
 
-      setShowForm(false); // hide form
+      setShowForm(false); 
     } catch (error) {
       console.error(error);
       toast.error("❌ Failed to update profile");
@@ -46,20 +46,20 @@ const Profile = () => {
       {user ? (
         <div className="mt-10 flex flex-col items-center gap-5 bg-white/30 backdrop-blur-md p-8 rounded-2xl shadow-xl">
           
-          {/* User Image */}
+          
           <img
             src={user.photoURL || "https://via.placeholder.com/150"}
             alt={user.displayName || "User"}
             className="w-32 h-32 rounded-full object-cover ring-4 ring-pink-300"
           />
 
-          {/* User Info */}
+          
           <h2 className="text-2xl font-semibold text-gray-800">
             {user.displayName || "No Name"}
           </h2>
           <p className="text-gray-700">{user.email || "No Email"}</p>
 
-          {/* Update Button */}
+          
           <button
             onClick={() => setShowForm(!showForm)}
             className="mt-4 px-6 py-2 bg-gradient-to-r from-pink-400 to-orange-300 text-white font-semibold rounded-lg shadow hover:opacity-90 transition"
@@ -67,7 +67,7 @@ const Profile = () => {
             {showForm ? "Close" : "Update Profile"}
           </button>
 
-          {/* Update Form */}
+          
           {showForm && (
             <form
               onSubmit={handleUpdateProfile}

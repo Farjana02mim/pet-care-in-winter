@@ -23,14 +23,14 @@ const Login = () => {
 
   const emailRef = useRef(null);
 
-  // Redirect if logged in
+  
   useEffect(() => {
     if (user) {
       navigate(from, { replace: true });
     }
   }, [user, navigate, from]);
 
-  // Handle email/password login
+  
   const handleSignin = (e) => {
     e.preventDefault();
     const email = e.target.email?.value;
@@ -51,7 +51,7 @@ const Login = () => {
       .catch((e) => toast.error(e.message));
   };
 
-  // Handle Google login
+  
   const handleGoogleSignin = () => {
     signInWithEmailFunc()
       .then((res) => {
@@ -62,12 +62,12 @@ const Login = () => {
       .catch((e) => toast.error(e.message));
   };
 
-  // 👉 Redirect to Forgot Password page with email
+  
   const handleForgetPasswordPage = () => {
     const email = emailRef.current?.value || "";
 
     navigate("/forgot-password", {
-      state: { email }, // passing email to the route
+      state: { email }, 
     });
   };
 
@@ -82,7 +82,7 @@ const Login = () => {
       <MyContainer>
         <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-10 p-6 lg:p-10 text-gray-800">
 
-          {/* Left Section */}
+          
           <div className="max-w-lg text-center lg:text-left">
             <h1 className="text-5xl font-extrabold text-[#E0557E] drop-shadow-md">
               Welcome Back 🐾
@@ -92,14 +92,14 @@ const Login = () => {
             </p>
           </div>
 
-          {/* Login Card */}
+          
           <div className="w-full max-w-md backdrop-blur-xl bg-white/60 border border-pink-200 shadow-xl rounded-2xl p-8">
             <form onSubmit={handleSignin} className="space-y-5">
               <h2 className="text-2xl font-semibold mb-3 text-center text-[#D9466E]">
                 Login
               </h2>
 
-              {/* Email */}
+              
               <div>
                 <label className="block text-sm mb-1 text-gray-700">Email</label>
                 <input
@@ -112,7 +112,7 @@ const Login = () => {
                 />
               </div>
 
-              {/* Password */}
+              
               <div className="relative">
                 <label className="block text-sm mb-1 text-gray-700">Password</label>
                 <input
@@ -130,7 +130,7 @@ const Login = () => {
                 </span>
               </div>
 
-              {/* Forgot Password → NEW LOGIC */}
+              
               <button
                 className="hover:underline text-sm text-pink-600"
                 type="button"
@@ -139,7 +139,7 @@ const Login = () => {
                 Forgot password?
               </button>
 
-              {/* Login Button */}
+              
               <button
                 type="submit"
                 className="w-full bg-gradient-to-r from-pink-400 to-orange-300 text-white py-2 rounded-lg font-semibold hover:opacity-90"
@@ -147,14 +147,14 @@ const Login = () => {
                 Login
               </button>
 
-              {/* Divider */}
+              
               <div className="flex items-center justify-center gap-2 my-2">
                 <div className="h-px w-16 bg-gray-300"></div>
                 <span className="text-sm text-gray-600">or</span>
                 <div className="h-px w-16 bg-gray-300"></div>
               </div>
 
-              {/* Google Login */}
+              
               <button
                 type="button"
                 onClick={handleGoogleSignin}

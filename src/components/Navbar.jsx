@@ -23,7 +23,7 @@ const Navbar = () => {
   return (
     <div className="bg-gradient-to-r from-pink-500 via-orange-400 to-red-400 shadow-lg relative">
       <MyContainer className="flex items-center justify-between py-3 relative">
-        {/* Logo */}
+        
         <div className="flex items-center gap-2">
           <img src={logo} alt="Logo" className="w-[45px]" />
           <h1 className="text-white text-2xl font-semibold tracking-wide">
@@ -31,14 +31,14 @@ const Navbar = () => {
           </h1>
         </div>
 
-        {/* Desktop Links */}
+
         <ul className="hidden lg:flex items-center gap-4 text-white font-medium">
           <li><MyLink to="/">Home</MyLink></li>
           <li><MyLink to="/services">Services</MyLink></li>
           {user && <li><MyLink to="/profile">My Profile</MyLink></li>}
         </ul>
 
-        {/* Right Section */}
+        
         <div className="flex items-center gap-3">
           {loading ? (
             <ClockLoader color="#fff" size={25} />
@@ -74,7 +74,7 @@ const Navbar = () => {
             </div>
           )}
 
-          {/* Mobile Hamburger Button */}
+          
           <div className="lg:hidden">
             <button
               onClick={() => setMenuOpen(!menuOpen)}
@@ -98,7 +98,7 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Mobile Menu Dropdown */}
+        
         {menuOpen && (
           <ul className="absolute top-full left-0 w-full bg-pink-500 text-white flex flex-col gap-2 p-4 lg:hidden z-20">
             <li><MyLink to="/" onClick={() => setMenuOpen(false)}>Home</MyLink></li>
